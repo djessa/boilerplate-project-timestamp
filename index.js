@@ -12,10 +12,17 @@ app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 20
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
-
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+  const date = new Date();
+  res.render(__dirname + '/views/index.html', {
+    projectUrl: 'https://boilerplate-project-timestamp.djessa.repl.co',
+    utc: date.toUTCString(),
+    unix: date.getTime(),
+    sortDate: date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate()
+  });
 });
 
 
